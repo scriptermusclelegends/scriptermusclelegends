@@ -44,5 +44,45 @@ game.Players.PlayerAdded:Connect(function(player)
                     wait(5) -- Time flying
                     bodyVelocity:Destroy()
                 end
-            elseif command == "speed" then
+            elseif command == "speed" then game.Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(character)
+        local humanoid = character:WaitForChild("Humanoid")
+        humanoid.JumpPower = 100 -- Default is usually 50
+    end)
+end)
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Button setup
+local frame = script.Parent.Parent -- Assume the script is inside a TextButton
+local flyButton = frame:WaitForChild("FlyButton") -- A button named FlyButton
+local speedButton = frame:WaitForChild("SpeedButton") -- A button named SpeedButton
+local resetButton = frame:WaitForChild("ResetButton") -- A button named ResetButton
+
+-- Fly action
+flyButton.MouseButton1Click:Connect(function()
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local bodyVelocity = Instance.new("BodyVelocity")
+        bodyVelocity.Velocity = Vector3.new(0, 50, 0)
+        bodyVelocity.MaxForce = Vector3.new(1e6, 1e6, 1e6)
+        bodyVelocity.Parent = character.HumanoidRootPart
+        wait(5) -- Time flying
+        bodyVelocity:Destroy()
+    end
+end)
+
+-- Speed action
+speedButton.MouseButton1Click:Connect(function()
+    if character and character:FindFirstChild("Humanoid") then
+        character.Humanoid.WalkSpeed = 50 -- Set speed to 50
+    end
+end)
+
+-- Reset action
+resetButton.MouseButton1Click:Connect(function()
+    if character and character:FindFirstChild("Humanoid") then
+        character.Humanoid.Health = 0 -- Reset the character
+    end
+end)
+
               
